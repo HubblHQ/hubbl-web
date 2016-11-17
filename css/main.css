@@ -23,15 +23,31 @@ html, body { height: 100%; width: 100%; background-color: #f6f5f3;  }
 .playlist, .events { display: inline-block; vertical-align: middle; }
 
 .playlist { padding: 20px; }
-.events { float: right; width: 300px; border-left: 1px solid #f6f5f3; padding: 20px; }
 
-.messagebox {}
-.messagebox .avatar {}
-.messagebox .username {}
-.messagebox .message {}
+.playlist .playingtrack, .playlist .track { width: 100%; margin-bottom: 10px; }
+
+.playlist .playingtrack .info { display: inline-block; vertical-align: top; }
+.playlist .playingtrack .cover { width: 100px; height: 100px; display: inline-block; vertical-align: top; }
+.playlist .playingtrack .cover img { border-radius: 6px; display: inline-block; width: 100px; height: 100px; }
+
+.playlist .track .cover { width: 50px; height: 50px; display: inline-block; vertical-align: middle; }
+.playlist .track .cover img { border-radius: 3px; display: inline-block; width: 50px; height: 50px; }
+.playlist .track .info { width: 100%; margin-left: 50px; margin-top: -50px; vertical-align: top; }
+.playlist .track .info .title { font-weight: bold; font-size: 15px; }
+.playlist .track .info .about { font-size: 15px; }
 
 
-.seekbar { background-color: white; position: fixed; bottom: 60px; width: 100%; max-width: inherit; height: 8px; background-color: #ebebebeb;  }
+
+.events { float: right; width: 300px; border-left: 1px solid #f6f5f3; padding: 10px; }
+
+.messagebox { margin-top: 15px; }
+.messagebox .avatar { width: 40px; height: 40px; display: inline-block; vertical-align: top; }
+.messagebox .avatar img { border-radius: 3px; display: inline-block; width: 40px; height: 40px; }
+.messagebox .info { display: inline-block; vertical-align: top; width: 250px; color: #505050 }
+.messagebox .info .username { font-weight: bold; font-size: 14px; }
+.messagebox .info .message { margin-top: 4px; font-size: 13px; }
+
+.seekbar { background-color: white; position: fixed; bottom: 60px; width: 100%; max-width: inherit; height: 8px; background-color: #ebebeb;  }
 .preload { background-color: #c1c1c1; height: 100%; width: 80%; }
 .position { background-color: #ffcc00; height: 100%; width: 50%; margin-top: -8px; }
 
