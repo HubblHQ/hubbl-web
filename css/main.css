@@ -27,14 +27,22 @@ html, body { height: 100%; width: 100%; background-color: #f6f5f3;  }
 .playlist .playingtrack, .playlist .track { width: 100%; margin-bottom: 10px; }
 
 .playlist .playingtrack .info { display: inline-block; vertical-align: top; }
-.playlist .playingtrack .cover { width: 100px; height: 100px; display: inline-block; vertical-align: top; }
+.playlist .playingtrack .cover { width: 100px; height: 100px; display: inline-block; vertical-align: middle; }
 .playlist .playingtrack .cover img { border-radius: 6px; display: inline-block; width: 100px; height: 100px; }
+.playlist .playingtrack .info { width: 100%; height: 100px; margin-left: 110px; margin-top: -100px; vertical-align: top; }
+.playlist .playingtrack .info .title { font-weight: bold; font-size: 18px; }
+.playlist .playingtrack .info .about { font-size: 17px; margin-top: 10px; }
+.playlist .playingtrack .info .about .author { display: inline-block; }
+.playlist .playingtrack .info .about .controls { display: inline-block; margin-left: 10px; }
 
+.playlist .track { height: 50px; }
 .playlist .track .cover { width: 50px; height: 50px; display: inline-block; vertical-align: middle; }
 .playlist .track .cover img { border-radius: 3px; display: inline-block; width: 50px; height: 50px; }
-.playlist .track .info { width: 100%; margin-left: 50px; margin-top: -50px; vertical-align: top; }
+.playlist .track .info { width: 100%; height: 100px; margin-left: 60px; margin-top: -50px; vertical-align: top; }
 .playlist .track .info .title { font-weight: bold; font-size: 15px; }
-.playlist .track .info .about { font-size: 15px; }
+.playlist .track .info .about { font-size: 15px; margin-top: 5px; }
+.playlist .track .info .about .author { display: inline-block; }
+.playlist .track .info .about .controls { display: inline-block; margin-left: 10px; }
 
 
 
