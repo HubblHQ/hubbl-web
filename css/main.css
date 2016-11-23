@@ -8,6 +8,7 @@ html, body { height: 100%; width: 100%; background-color: #f6f5f3;  }
 .header { width: 100%; height: 40px; border-bottom: 1px solid #f6f5f3; }
 
 .header .left { height: 100%; float: left; display: inline-block; vertical-align: top;  }
+.header .left:hover { color: black; cursor: pointer; }
 .header .middle { height: 100%; float: left; width: 100%; margin-top: -40px; text-align: center; display: inline-block; vertical-align: top; }
 .header .user { height: 100%; float: right; margin-top: -40px; display: inline-block; vertical-align: top; }
 

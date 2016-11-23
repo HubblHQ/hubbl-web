@@ -7,13 +7,19 @@
 <div class="world">
     <div class="container">
         <div class="header">
-            <div class="left"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+            <div class="left">
+                <i class="fa fa-ellipsis-h" id="more-btn" aria-hidden="true"></i>
+                <i class="fa fa-arrow-left" id="arrow-back-btn" aria-hidden="true" hidden="true"></i>
+            </div>
             <div class="middle"><i class="fa fa-smile-o" aria-hidden="true"></i></div>
             <div class="user">
-                <div class="username"><i class="fa fa-user" aria-hidden="true"></i>Самохин Артем</div>
+                <div class="username" id="username-btn"><i class="fa fa-user" aria-hidden="true"></i>Самохин Артем</div>
             </div>
         </div>
-        <div class="content">
+        <div class="content" id="settings" hidden="true">
+            settings
+        </div>
+        <div class="content" id="playlist">
             <div class="playlist">
                 <div class="playingtrack">
                     <div class="cover"><img src="https://avatars.yandex.net/get-music-content/49707/ece7fda7.a.3742024-1/50x50"/></div>
@@ -100,4 +106,7 @@
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/interface.js" ></script>
 </body>​
