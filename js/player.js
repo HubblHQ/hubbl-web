@@ -51,6 +51,8 @@ class PlayListEntry {
         this.likes = likes;
         this.dislikes = dislikes;
     }
+
+    // TODO: implement priority queue
 }
 
 
@@ -85,6 +87,8 @@ class Player {
     stop() {
         this.state = PLAYER_STATE_STOP;
     }
+
+    // TODO: Implement sound player
 
 }
 
