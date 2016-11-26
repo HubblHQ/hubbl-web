@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<meta charset="utf-8"/>
 <title>hubbl</title>
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -9,15 +10,25 @@
         <div class="header">
             <div class="left">
                 <i class="fa fa-ellipsis-h" id="more-btn" aria-hidden="true"></i>
-                <i class="fa fa-arrow-left" id="arrow-back-btn" aria-hidden="true" hidden="true"></i>
+                <i class="fa fa-arrow-left" id="arrow-back-btn" aria-hidden="true"></i>
             </div>
             <div class="middle">party3138</div>
             <div class="user">
                 <div class="username" id="username-btn"><i class="fa fa-user" aria-hidden="true"></i>Самохин Артем</div>
             </div>
         </div>
-        <div class="content" id="settings" hidden="true">
-            settings
+        <div class="content" id="settings">
+            <div class="settings">
+                <div class="settingslist">
+                    <div class="setting">1</div>
+                    <div class="setting">2</div>
+                    <div class="setting">3</div>
+                </div>
+                <div class="userlogo">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <div class="userlogo-name">User Settings</div>
+                </div>
+            </div>
         </div>
         <div class="content" id="playlist">
             <div class="playlist">
@@ -101,8 +112,8 @@
             <div class="volume"><i class="fa fa-volume-up" aria-hidden="true"></i></div>
         </div>
         <div class="seekbar">
-            <div class="preload"></div>
-            <div class="position"></div>
+            <div class="preload" id='preload-bar'></div>
+            <div class="position" id='play-bar'></div>
         </div>
     </div>
 </div>
@@ -110,3 +121,4 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/interface.js" ></script>
 </body>​
+</html>
