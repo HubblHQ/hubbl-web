@@ -15,6 +15,9 @@ CUR_COVER = '#cur-cover';
 CUR_TITLE = '#cur-title';
 CUR_AUTHOR = '#cur-author';
 
+
+FPS = 60;
+
 class ScreenState {
 
     constructor(frame) {
@@ -72,13 +75,15 @@ $(document).ready(function() {
     });
 
     var playlist = new PlayList();
-    playlist.add(new PlayListEntry(0, 'Nvember Rain', 'Guns N\' Roses', 0, 'https://cs5-4v4.vk-cdn.net/p35/8efc446d2658fa.mp3', 120, 0, 0, PLAYLIST_ENTRY_STATUS_ACCEPTED));
+    playlist.add(new PlayListEntry(0, 'Nvember Rain', 'Guns N\' Roses', 0, 'https://cs5-4v4.vk-cdn.net/p13/2ebbb5add1b7ba.mp3', 120, 0, 0, PLAYLIST_ENTRY_STATUS_ACCEPTED));
 
     var player = new Player(playlist);
-    var playerUI = new PlayerInterface(player);
 
     $(PLAY_BTN).click(function() { player.play() });
 
     $(PAUSE_BTN).click(function() { player.pause() });
+
+    var updateFunction = function() { player.update() };
+    var _intervalId = setInterval(updateFunction, 1000 / FPS);
 
 });

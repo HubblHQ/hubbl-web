@@ -37,19 +37,40 @@ class PlayerInterface {
     }
 
     setTrackInfo(coverURI, title, author) {
-        //$(CUR_TITLE).
+        //$(CUR_COVER).(coverURI);
+        $(CUR_TITLE).text(title);
+        $(CUR_AUTHOR).text(author);
+    }
+
+    play() {
+        var track = this.player.playlist.get();
+        this.setTrackInfo(track.providerURI, track.name, track.author);
+        $(PLAY_BTN).hide();
+        $(PAUSE_BTN).show();
+    }
+
+    pause() {
+        $(PAUSE_BTN).hide();
+        $(PLAY_BTN).show();
+    }
+
+    stop() {
+        $(PAUSE_BTN).hide();
+        $(PLAY_BTN).show();
+        this.setTrackInfo('', '', '');
+        this.setPlayingPosition(0);
+        this.setPreloadPosition(0);
     }
 
     update() {
         switch (this.player.state) {
             case PLAYER_STATE_PLAY:
-
+                var track = this.player.playlist.get();
+                this.setPlayingPosition(track.audio.currentTime / track.audio.duration * 100);
+                //this.setPreloadPosition(0);
                 break;
             case PLAYER_STATE_PAUSE:
             case PLAYER_STATE_STOP:
-                setTrackInfo('', '', '');
-                setPlayingPosition(0);
-                setPreloadPosition(0);
                 break;
         }
     }
@@ -125,72 +146,74 @@ class PlayList {
 
 
 class Player {
+
     constructor(playlist) {
-        this.interface = new PlayerInterface();
-        this.state = PLAYER_STATE_STOP;
         this.playlist = playlist;
+        this.state = PLAYER_STATE_STOP;
+        this.isUpdateNeeded = false;
+        this.interface = new PlayerInterface(this);
     }
 
     getState() {
         return this.state;
     }
 
+    getInterface() {
+        return this.interface;
+    }
+
     play() {
-        if (this.state == PLAYER_STATE_PLAY) return;
-
-        if (this.state == PLAYER_STATE_STOP) {
-            if (!this.playlist.isEmpty()) {
-                this.playlist.get().audio.play();
-            } else return;
-        }
-
-        if (this.state == PLAYER_STATE_PAUSE) {
-            if (!this.playlist.isEmpty()) {
-                if (this.playlist.get().audio.ended) {
-                    this.playlist.get().audio.play();
+        switch (this.state) {
+            case PLAYER_STATE_PLAY:
+                break;
+            case PLAYER_STATE_PAUSE:
+                if (this.playlist.isEmpty()) {
+                    this.state = PLAYER_STATE_STOP;
+                    this.interface.stop();
                 } else {
-                    this.playlist.drop();
-                    this.play();
+                    this.state = PLAYER_STATE_PLAY;
+                    this.playlist.get().audio.play();
+                    this.interface.play();
                 }
-
-            } else {
-                this.state = PLAYER_STATE_STOP;
-                return;
-            }
+                break;
+            case PLAYER_STATE_STOP:
+                if (this.playlist.isEmpty()) {
+                    break;
+                } else {
+                    this.state = PLAYER_STATE_PLAY;
+                    this.playlist.get().audio.play();
+                    this.interface.play();
+                }
+                break;
         }
-
-        this.state = PLAYER_STATE_PLAY;
     }
 
     pause() {
-        if (this.state == PLAYER_STATE_PLAY && !this.playlist.isEmpty()) {
-            this.state = PLAYER_STATE_PAUSE;
-            this.playlist.get().audio.pause();
-        } else if (this.state == PLAYER_STATE_PLAY ) {
-            this.state = PLAYER_STATE_STOP;
-        }
+        this.state = PLAYER_STATE_PAUSE;
+        if (!this.playlist.isEmpty()) this.playlist.get().audio.pause();
+        this.interface.pause();
     }
 
     stop() {
         this.state = PLAYER_STATE_STOP;
-        if (!this.playlist.isEmpty()) {
-            this.playlist.get().audio.currentTime = 0;
-        }
+        this.interface.stop();
     }
 
     update() {
-        if (this.state != PLAYER_STATE_PLAY) return;
-        if (!this.playlist.isEmpty()) {
-            if (this.playlist.get().audio.ended) {
-                this.playlist.drop();
-                this.state = PLAYER_STATE_STOP;
-                this.play();
-            }
-        } else {
-            this.stop();
+        switch (this.state) {
+            case PLAYER_STATE_PLAY:
+                if (this.playlist.get().audio.ended) {
+                    this.playlist.drop();
+                    if (this.playlist.isEmpty()) this.stop(); else this.play();
+                }
+                break;
+            case PLAYER_STATE_PAUSE:
+                break;
+            case PLAYER_STATE_STOP:
+                if (this.playlist.isEmpty()) return; else this.play();
+                break;
         }
+        this.interface.update();
     }
-
-    // TODO: Implement sound player
 
 }
