@@ -99,16 +99,19 @@
         <div class="player">
             <div class="current">
                 <div class="wrap">
-                    <div class="cover"><img src="https://avatars.yandex.net/get-music-content/49707/ece7fda7.a.3742024-1/50x50"/></div>
+                    <div id="cur-cover" class="cover"><img src="https://avatars.yandex.net/get-music-content/49707/ece7fda7.a.3742024-1/50x50"/></div>
                     <div class="info">
-                        <div class="title">November Rain</div>
-                        <div class="artist">Guns N' Roses</div>
+                        <div id="cur-title" class="title">November Rain</div>
+                        <div id="cur-author" class="artist">Guns N' Roses</div>
                     </div>
                 </div>
             </div>
             <div class="controlls">
                 <div class="dislike"><i class="fa fa-thumbs-down" aria-hidden="true"></i></div>
-                <div class="pause"><i class="fa fa-pause" aria-hidden="true"></i></div>
+                <div class="pause">
+                    <i id="pause-btn" class="fa fa-pause" aria-hidden="true"></i>
+                    <i id="play-btn" class="fa fa-play" aria-hidden="true"></i>
+                </div>
                 <div class="like"><i class="fa fa-thumbs-up" aria-hidden="true"></i></div>
             </div>
             <div class="volume"><i class="fa fa-volume-up" aria-hidden="true"></i></div>
@@ -122,5 +125,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/interface.js" ></script>
+<script type="text/javascript" src="js/users.js" ></script>
+<script type="text/javascript" src="js/player.js" ></script>
 </body>​
 </html>

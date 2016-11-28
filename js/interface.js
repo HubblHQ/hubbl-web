@@ -5,8 +5,15 @@ USERNAME_BTN = '#username-btn';
 BACK_BTN = '#arrow-back-btn';
 MORE_BTN = '#more-btn';
 
+PLAY_BTN = '#play-btn';
+PAUSE_BTN = '#pause-btn';
+
 PRELOAD_BAR = '#preload-bar';
 PLAY_BAR = '#play-bar';
+
+CUR_COVER = '#cur-cover';
+CUR_TITLE = '#cur-title';
+CUR_AUTHOR = '#cur-author';
 
 class ScreenState {
 
@@ -41,9 +48,9 @@ class ScreenState {
 
 $(document).ready(function() {
 
-
     $(BACK_BTN).hide();
     $(USER_SETTINGS_FRAME).hide();
+    $(PAUSE_BTN).hide();
 
     var state = new ScreenState(PLAYER_FRAME);
 
@@ -63,5 +70,15 @@ $(document).ready(function() {
                 break;
         }
     });
+
+    var playlist = new PlayList();
+    playlist.add(new PlayListEntry(0, 'Nvember Rain', 'Guns N\' Roses', 0, 'https://cs5-4v4.vk-cdn.net/p35/8efc446d2658fa.mp3', 120, 0, 0, PLAYLIST_ENTRY_STATUS_ACCEPTED));
+
+    var player = new Player(playlist);
+    var playerUI = new PlayerInterface(player);
+
+    $(PLAY_BTN).click(function() { player.play() });
+
+    $(PAUSE_BTN).click(function() { player.pause() });
 
 });
