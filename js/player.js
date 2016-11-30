@@ -67,7 +67,7 @@ class PlayerInterface {
             case PLAYER_STATE_PLAY:
                 var track = this.player.playlist.get();
                 this.setPlayingPosition(track.audio.currentTime / track.audio.duration * 100);
-                //this.setPreloadPosition(0);
+                this.setPreloadPosition(track.audio.buffered.end(track.audio.buffered.length-1) / track.audio.duration * 100);
                 break;
             case PLAYER_STATE_PAUSE:
             case PLAYER_STATE_STOP:
@@ -91,7 +91,7 @@ class PlayListEntry {
         this.status = PLAYLIST_ENTRY_STATUS_PENDING;
     }*/
 
-    constructor(id, title, author, publisherID, providerURI, duration, likes, dislikes, status) {
+    constructor(id, name, author, publisherID, providerURI, duration, likes, dislikes, status) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -149,7 +149,7 @@ class Player {
 
     constructor(playlist) {
         this.playlist = playlist;
-        this.state = PLAYER_STATE_STOP;
+        this.state = PLAYER_STATE_PAUSE;
         this.isUpdateNeeded = false;
         this.interface = new PlayerInterface(this);
     }

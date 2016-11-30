@@ -82,8 +82,8 @@ html, body { height: 100%; width: 100%; background-color: #f6f5f3; overflow: hid
 
 .controlls .dislike, .controlls .pause, .controlls .like { display: inline-block; vertical-align: middle; line-height: 60px; color: #c1c1c1; margin: 0 10px; }
 .controlls .dislike:hover, .controlls .pause:hover, .controlls .like:hover { color: black; cursor: pointer; }
-.controlls .dislike, .controlls .like { font-size: 25px; }
-.controlls .pause { font-size: 35px; }
+.controlls .dislike, .controlls .like { font-size: 25px; width: 30px; }
+.controlls .pause { font-size: 35px; width: 40px; }
 
 .current .wrap { padding: 5px 5px 5px 15px; }
 .current .cover { width: 50px; height: 50px; display: inline-block; vertical-align: middle; }
