@@ -44,20 +44,24 @@
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\Main.cs" />
-    <Compile Include="src\settings\Settings.cs" />
     <Compile Include="src\controllers\ApplicationBootstrapper.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="src\controllers\Handlers.cs" />
+    <Compile Include="src\models\User.cs" />
+    <Compile Include="src\models\Hub.cs" />
+    <Compile Include="src\models\Track.cs" />
+    <Compile Include="src\utilities\Settings.cs" />
+    <Compile Include="src\utilities\Utility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Views\" />
     <Folder Include="src\" />
     <Folder Include="src\models\" />
-    <Folder Include="src\settings\" />
     <Folder Include="src\controllers\" />
     <Folder Include="assets\" />
+    <Folder Include="src\utilities\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Index.html">
