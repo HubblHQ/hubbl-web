@@ -3,22 +3,17 @@
 Every error response: { status, code, msg }
 
 Available for all:
-```
 /signin : { login, password } -> { id, name, sessionToken }
 /signup : { name, login, password } -> {}
-```
 
 Available for authenticated:
-```
 /hubs : {} -> { hubs: [ { id, name, author }, ... ] }
 /hubs/search : { query } -> { hubs: [ { id, name, author }, ... ] }
 /hub : { id } -> { name, author }
 /hub/connect : { id } -> {}
 /hub/new : { name } -> { id }
-```
 
-Available for conntected:
-```
+Available for connected:
 /hub/delete : {} -> {}
 /hub/users : { id } -> { users: [ { id, name }, ... ] }
 
@@ -32,4 +27,3 @@ Available for conntected:
 /player : {} -> { playPos, state, volume }
 /player/update : { playPos, state, volume } -> {}
 /player/next : {} -> {}
-```
