@@ -2,10 +2,16 @@
 
 This is web site and API for Hubbl project
 
-# Specification
-Every ok response: { status, result: { ... } }
+## Specification
+Every ok response:
+```
+{ status, result: { ... } }
+```
 
-Every error response: { status, code, msg }
+Every error response:
+```
+{ status, code, msg }
+```
 
 Available for all:
 ```
