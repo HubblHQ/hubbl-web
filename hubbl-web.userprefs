@@ -1,0 +1,14 @@
+﻿<Properties StartupItem="hubbl-web/hubb-web.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="hubbl-web/src/controllers/Handlers.cs">
+    <Files>
+      <File FileName="hubbl-web/src/controllers/Handlers.cs" Line="44" Column="25" />
+      <File FileName="hubbl-web/assets/specification.md" Line="14" Column="29" />
+      <File FileName="hubbl-web/Views/Index.html" Line="5" Column="38" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
