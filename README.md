@@ -77,7 +77,8 @@ Copy-pasted from https://github.com/NancyFx/Nancy/wiki/Hosting-Nancy-with-Nginx-
 
 To install project on Linux, grab anything from Bin/Release or Debug folder and copy it to any place you want on Linux machine, but make sure that assets folder ends up on  /var/hubbl/assets/ for making the nginx config below to work. For the following we assume that you copied all of it to /var/hubbl
 
-# Install nginx
+### Install nginx
+
 [nginx][nginx] is the webserver we're using. We configure it to forward all requests to the Nancy self hosted application. The content folder with static files will be handled by nginx.
 
     $ sudo apt-get install nginx

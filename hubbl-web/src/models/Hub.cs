@@ -10,11 +10,12 @@ namespace hubbl.web.models {
 		public List<Track> playlist;
 		public List<User> users;
 
-		public Hub(string name, string owner) {
+		public Hub(string name, User owner) {
 			this.name = name;
 			this.owner = owner;
 			this.playlist = new List<Track>();
-			this.users = new List<User>(owner);
+			this.users = new List<User>();
+			this.users.Add(owner);
 			this.save();
 		}
 
