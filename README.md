@@ -56,7 +56,7 @@ For Ubuntu and Debian, please do the folowing to install Mono, Monodevelop and x
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 sudo apt-get update
-sudo apt-get install mono-complete monodevelop=5.10.0.871-0xamarin2 mono-xsp4
+sudo apt-get install mono-complete monodevelop mono-xsp4
 ```
 For more info please visit http://www.mono-project.com/docs/getting-started/install/linux/.
 
@@ -73,13 +73,13 @@ mono hubbl-web/bin/Debug/hubbl-web.exe
 
 ## How to deploy
 
-Copy-pasted from https://github.com/NancyFx/Nancy/wiki/Hosting-Nancy-with-Nginx-on-Ubuntu, not sure if it will work.
+Copy-pasted from https://github.com/NancyFx/Nancy/wiki/Hosting-Nancy-with-Nginx-on-Ubuntu.
 
 To install project on Linux, grab anything from Bin/Release or Debug folder and copy it to any place you want on Linux machine, but make sure that assets folder ends up on  /var/hubbl/assets/ for making the nginx config below to work. For the following we assume that you copied all of it to /var/hubbl
 
 ### Install nginx
 
-[nginx][nginx] is the webserver we're using. We configure it to forward all requests to the Nancy self hosted application. The content folder with static files will be handled by nginx.
+Nginx is the webserver we're using. We configure it to forward all requests to the Nancy self hosted application. The content folder with static files will be handled by nginx.
 
     $ sudo apt-get install nginx
 
@@ -104,7 +104,7 @@ Create the website configuration file in /etc/nginx/sites-available/hubbl with t
     }
 ```
 
-This lets your server forward any requests send to port 80 to your running nancy instance listening on port 8888 with the exception of static content that is requested from /assets/
+This lets your server forward any requests send to port 80 to your running nancy instance listening on port 8080 with the exception of static content that is requested from /assets/
 
 
 To enable the website, create a symbolic link from the sites-available to the sites-enabled folder. This will make it easy to temporary disable sites in the future.

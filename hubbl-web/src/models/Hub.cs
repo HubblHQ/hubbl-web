@@ -5,31 +5,33 @@ namespace hubbl.web.models {
 	
 	public class Hub {
 
+		public class DatabaseEntry {
+			public long id;
+			public string name;
+			public long ownerId;
+
+			public DatabaseEntry(long id) {
+				this.id = id;
+			}
+
+			public DatabaseEntry(string name, long ownerId) {
+				this.name = name;
+				this.ownerId = ownerId;
+			}
+		}
+
+		public long id;
 		public string name;
 		public User owner;
-		public List<Track> playlist;
+		public Player player;
 		public List<User> users;
 
-		public Hub(string name, User owner) {
+		public Hub(long id, string name, Player player, User owner) {
 			this.name = name;
 			this.owner = owner;
-			this.playlist = new List<Track>();
+			this.player = player;
 			this.users = new List<User>();
 			this.users.Add(owner);
-			this.save();
-		}
-
-		public Hub(string name) {
-			this.name = name;
-			this.getByName();
-		}
-
-		public bool save() {
-			return true;
-		}
-
-		private bool getByName() {
-			return true;
 		}
 
 	}

@@ -4,45 +4,35 @@ using System.Diagnostics;
 using System.Threading;
 
 using System.Threading.Tasks;
-//using FluentAssertions;
-using MongoDB.Driver.Core;
+using hubbl.web.models;
 using MongoDB.Driver;
-using MongoDB.Bson;
 
 namespace hubbl.web {
-	
+
 	class MainClass {
-		
+
 		private static NancyHost host;
 
-		protected static IMongoClient client;
-		protected static IMongoDatabase database;
-
-		public static void Main (string[] args) {
-
-			client = new MongoClient();
-			database = client.GetDatabase("test");
-
-			var collection = database.GetCollection<BsonDocument>("restaurants");
-			var filter = Builders<BsonDocument>.Filter.Eq("name", "Juni");
-			var update = Builders<BsonDocument>.Update
-				.Set("cuisine", "American (New)")
-				.CurrentDate("lastModified");
-			collection.UpdateOneAsync(filter, update).Wait();
-
-			//System.Console.WriteLine(result.ToString());
-
-			//result.MatchedCount.Should().Be(1);
-			//if (result.IsModifiedCountAvailable)
-			//{
-				//result.ModifiedCount.Should().Be(1);
-			//}
-
-
-
+		public static void Main(string[] args)
+		{
 			var exitEvent = new ManualResetEvent(false);
 
-			host = new NancyHost(
+		    var client = new MongoClient();
+		    var db = client.GetDatabase("hubbl");
+
+		    IMongoCollection<User> persons = db.GetCollection<User>("users");
+
+		    persons.InsertOne(new User("user", "userr", "userrr"));
+
+		    var result = persons.Find("{}").ToList();
+
+		    foreach (var v in result) {
+		        Console.WriteLine(v.id + v.login + " " + v.password + v.name);
+		    }
+
+
+
+		    host = new NancyHost(
 				new Uri(Settings.SERVER_URL)
 			);
 
@@ -52,11 +42,11 @@ namespace hubbl.web {
 				eventArgs.Cancel = true;
 				exitEvent.Set();
 			};
-				
+
 			Console.WriteLine("Nancy serving " + Settings.SERVER_URL);
 			//Process.Start(Settings.SERVER_URL);
 			exitEvent.WaitOne();
-			host.Stop ();
+			host.Stop();
 		}
 
 	}

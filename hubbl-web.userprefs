@@ -1,17 +1,30 @@
 ﻿<Properties StartupItem="hubbl-web/hubb-web.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="hubbl-web/src/controllers/Handlers.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="hubbl-web/src/Main.cs">
     <Files>
-      <File FileName="hubbl-web/src/controllers/Handlers.cs" Line="50" Column="7" />
-      <File FileName="hubbl-web/src/models/User.cs" Line="1" Column="1" />
-      <File FileName="hubbl-web/src/models/Hub.cs" Line="1" Column="1" />
-      <File FileName="hubbl-web/src/models/Track.cs" Line="1" Column="1" />
-      <File FileName="hubbl-web/src/utilities/Utility.cs" Line="1" Column="1" />
-      <File FileName="hubbl-web/assets/js/player.js" Line="1" Column="1" />
+      <File FileName="hubbl-web/src/Main.cs" Line="49" Column="6" />
+      <File FileName="hubbl-web/src/models/User.cs" Line="9" Column="20" />
+      <File FileName="hubbl-web/packages.config" Line="7" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.hubb-web>
+    <MonoDevelop.Ide.CustomExecutionModes>
+      <Data Name="Mono 4.6.2 (Custom)" Id="f1060b13-506c-421c-bc39-73f6e36f41a4" ModeId="Mono 4.6.2">
+        <CommandData>
+          <Item Key="MonoDevelop.Ide.Execution.CustomArgsCustomizer">
+            <Value ctype="CustomArgsExecutionModeData">
+              <EnvironmentVariables />
+            </Value>
+          </Item>
+          <Item Key="MonoDevelop.Ide.Execution.MonoExecutionCustomizer">
+            <Value MonoPath="mono" ctype="MonoExecutionParameters" />
+          </Item>
+        </CommandData>
+      </Data>
+    </MonoDevelop.Ide.CustomExecutionModes>
+  </MonoDevelop.Ide.ItemProperties.hubb-web>
 </Properties>
