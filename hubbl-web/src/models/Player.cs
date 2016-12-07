@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using Priority_Queue;
 
 namespace hubbl.web.models {
@@ -12,7 +14,8 @@ namespace hubbl.web.models {
 			STOP = 2
 		}
 
-		public Status status = Status.STOP;
+	    public ObjectId id;
+	    public Status status = Status.STOP;
 		public Track current = null;
 		private SimplePriorityQueue<long> playlist = new SimplePriorityQueue<long>();
 		private SimplePriorityQueue<long> pendingList = new SimplePriorityQueue<long>();
@@ -21,6 +24,7 @@ namespace hubbl.web.models {
 		public int volume = 100;
 
 		public Player() {
+
 		}
 
 

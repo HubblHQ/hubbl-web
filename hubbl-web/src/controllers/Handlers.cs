@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using hubbl.web.models;
 using Nancy.ModelBinding;
 
 namespace hubbl.web {
@@ -9,9 +8,7 @@ namespace hubbl.web {
 		public Handlers () {
 
 			// get webapp page
-			Get("/", parameters => {
-				return View["index.html"];
-			});
+			Get("/", parameters => View["index.html"]);
 
 			initAwailableForAll();
 			initAwailableForAutentificated();
@@ -21,14 +18,10 @@ namespace hubbl.web {
 		private void initAwailableForAll() {
 			
 			// { login, password } -> { id, name, sessionToken }
-			Get("/signin", parameters => {
-				return "";
-			});
+			Get("/signin", parameters => User.toLoginResponse(User.tryLogin(Request.Query["login"], Request.Query["password"])));
 
 			// { name, login, password } -> {}
-			Get("/signup", parameters => {
-				return "";
-			});
+			Get("/signup", parameters => User.toSignUpResponse(User.trySignUp(Request.Query["name"], Request.Query["login"], Request.Query["password"])));
 
 		}
 

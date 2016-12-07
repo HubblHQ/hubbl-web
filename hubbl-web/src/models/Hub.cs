@@ -1,38 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace hubbl.web.models {
-	
+
 	public class Hub {
 
-		public class DatabaseEntry {
-			public long id;
-			public string name;
-			public long ownerId;
-
-			public DatabaseEntry(long id) {
-				this.id = id;
-			}
-
-			public DatabaseEntry(string name, long ownerId) {
-				this.name = name;
-				this.ownerId = ownerId;
-			}
-		}
-
-		public long id;
+	    [BsonId]
+	    public ObjectId id;
 		public string name;
 		public User owner;
 		public Player player;
 		public List<User> users;
 
-		public Hub(long id, string name, Player player, User owner) {
+	    [BsonConstructor]
+	    public Hub(string name, User owner, Player player, List<User> users) {
 			this.name = name;
 			this.owner = owner;
 			this.player = player;
-			this.users = new List<User>();
-			this.users.Add(owner);
+			this.users = users;
 		}
+
+	    public Hub(string name, User owner, Player player) {
+	        this.name = name;
+	        this.owner = owner;
+	        this.player = player;
+	        this.users = new List<User> {owner};
+	    }
 
 	}
 }
