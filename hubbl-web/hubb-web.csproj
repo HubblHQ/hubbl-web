@@ -67,6 +67,7 @@
     <Compile Include="src\models\network\BaseResponse.cs" />
     <Compile Include="src\models\network\EmptyResponse.cs" />
     <Compile Include="src\models\network\ErrorResponse.cs" />
+    <Compile Include="src\models\network\HubInfo.cs" />
     <Compile Include="src\models\network\LoginResponse.cs" />
     <Compile Include="src\models\User.cs" />
     <Compile Include="src\models\Hub.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using hubbl.web.models.network;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -21,8 +22,17 @@ namespace hubbl.web.models {
 			this.name = name;
 		}
 
+	    public static bool authentificated(String token) {
+	        return !String.IsNullOrEmpty(token);
+	    }
+
+	    public static string withAutentification(String token, Func<string, string> onSuccess, string parameter) {
+	        if (String.IsNullOrEmpty(token)) return new ErrorResponse(300, Constants.NetErrorMessages.FORBIDDEN).ToJson();
+	        return onSuccess(parameter);
+	    }
+
 	    public static User tryLogin(string login, string password) {
-	        IMongoCollection<User> users = new MongoClient().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
+	        IMongoCollection<User> users = new MongoClient(Settings.MONGODB_CONNECTION_URL).GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
 
 	        var builder = Builders<User>.Filter;
 	        FilterDefinition<User> filter = builder.Eq(Constants.USER_LOGIN, login) & builder.Eq(Constants.USER_PASSWORD, password);
@@ -33,12 +43,12 @@ namespace hubbl.web.models {
 	    }
 
 	    public static string toLoginResponse(User user) {
-	        if (user == null) return new ErrorResponse(201, Constants.NetErrorMessages.LOGIN_FAILED).toJson();
-	        return new LoginResponse(user.id.ToString(), user.name, user.token).toJson();
+	        if (user == null) return new ErrorResponse(201, Constants.NetErrorMessages.LOGIN_FAILED).ToJson();
+	        return new LoginResponse(user.id.ToString(), user.name, user.token).ToJson();
 	    }
 
 	    public static User trySignUp(string name, string login, string password) {
-	        IMongoCollection<User> users = new MongoClient().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
+	        IMongoCollection<User> users = new MongoClient(Settings.MONGODB_CONNECTION_URL).GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
 
 	        List<User> usersWithThatLogin = users.Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).ToList();
 	        if (usersWithThatLogin.Count > 0) return null;
@@ -49,8 +59,8 @@ namespace hubbl.web.models {
 	    }
 
 	    public static string toSignUpResponse(User user) {
-	        if (user == null) return new ErrorResponse(202, Constants.NetErrorMessages.SIGNUP_FAILED).toJson();
-	        return new EmptyResponse().toJson();
+	        if (user == null) return new ErrorResponse(202, Constants.NetErrorMessages.SIGNUP_FAILED).ToJson();
+	        return new EmptyResponse().ToJson();
 	    }
 
 	}

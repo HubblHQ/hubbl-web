@@ -3,13 +3,13 @@
     public class LoginResponse : BaseResponse {
         public string id;
         public string name;
-        public string sessionToken;
+        public string token;
 
-        public LoginResponse(string id, string name, string sessionToken) {
+        public LoginResponse(string id, string name, string token) {
             this.status = Constants.Status.OK;
             this.id = id;
             this.name = name;
-            this.sessionToken = sessionToken;
+            this.token = token;
         }
 
     }
