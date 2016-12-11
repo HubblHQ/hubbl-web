@@ -27,7 +27,7 @@ namespace hubbl.web.models {
 	    }
 
 	    public static string withAutentification(String token, Func<string, string> onSuccess, string parameter) {
-	        if (String.IsNullOrEmpty(token)) return new ErrorResponse(300, Constants.NetErrorMessages.FORBIDDEN).ToJson();
+	        if (!authentificated(token)) return new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson();
 	        return onSuccess(parameter);
 	    }
 
@@ -43,7 +43,7 @@ namespace hubbl.web.models {
 	    }
 
 	    public static string toLoginResponse(User user) {
-	        if (user == null) return new ErrorResponse(201, Constants.NetErrorMessages.LOGIN_FAILED).ToJson();
+	        if (user == null) return new ErrorResponse(201, Constants.NetMsg.LOGIN_FAILED).ToJson();
 	        return new LoginResponse(user.id.ToString(), user.name, user.token).ToJson();
 	    }
 
@@ -59,7 +59,7 @@ namespace hubbl.web.models {
 	    }
 
 	    public static string toSignUpResponse(User user) {
-	        if (user == null) return new ErrorResponse(202, Constants.NetErrorMessages.SIGNUP_FAILED).ToJson();
+	        if (user == null) return new ErrorResponse(202, Constants.NetMsg.SIGNUP_FAILED).ToJson();
 	        return new EmptyResponse().ToJson();
 	    }
 

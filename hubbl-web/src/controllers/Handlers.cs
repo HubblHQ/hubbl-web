@@ -35,20 +35,22 @@ namespace hubbl.web {
 
 			// {} -> [ { id, name, author }, ... ]
 			Get("/hubs", _ => User.authentificated(Request.Query["token"]) ?
-		        Hub.getAll().ToJson() : new ErrorResponse(300, Constants.NetErrorMessages.FORBIDDEN).ToJson());
+		        Hub.getAll().ToJson() : new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson());
 
-			// { query } -> [ { id, name, author }, ... ]
-		    // FUCKING C# decided that one uses find as dynamic call. Can be fixed by cast. No idea why it is happening. Doesn't depends on what's inside of find.
+            // { query } -> [ { id, name, author }, ... ]
+            // FUCKING C# decided that one uses find as dynamic call. Can be fixed by cast. No idea why it is happening. Doesn't depends on what's inside of find.
 		    Get("/hubs/search", _ => User.authentificated(Request.Query["token"]) ?
-		        ((List<HubInfo>)Hub.find(Request.Query["query"])).ToJson() : new ErrorResponse(300, Constants.NetErrorMessages.FORBIDDEN).ToJson());
+		        ((List<HubInfo>)Hub.find(Request.Query["query"])).ToJson() : new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson());
 
-		    // { id } -> { name, author }
-			Get("/hub", _ => "");
+		    // { id } -> { id, name, author }
+			Get("/hub", _ => User.authentificated(Request.Query["token"]) ?
+		        Hub.getOrError(Request.Query["id"]) : new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson());
 
 			// { id } -> {}
-			Get("/hub/connect", _ => "");
+			Get("/hub/connect", _ => User.authentificated(Request.Query["token"]) ?
+		        Hub.tryConnect(Request.Query["id"]) : new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson());
 
-			// { name } -> { id }
+		    // { name } -> { id }
 			Get("/hub/new", _ => "");
 
 		}

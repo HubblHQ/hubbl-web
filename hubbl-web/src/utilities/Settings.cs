@@ -26,10 +26,11 @@ namespace hubbl.web {
             public const string ERROR = "error";
         }
 
-        public class NetErrorMessages {
+        public class NetMsg {
             public const string LOGIN_FAILED = "Wrong login or password";
             public const string SIGNUP_FAILED = "Error while creating user";
             public const string FORBIDDEN = "Access denied";
+            public const string KEY_NOT_FOUND = "Key not found";
         }
 
     }

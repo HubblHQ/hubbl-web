@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using hubbl.web.models.network;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -30,6 +31,10 @@ namespace hubbl.web.models {
 	        this.users = new List<string> {owner.id.ToString()};
 	    }
 
+	    public HubInfo toHubInfo() {
+	        return new HubInfo(this.id.ToString(), this.name, this.owner.name);
+	    }
+
 	    public static List<HubInfo> getAll() {
 	        return new MongoClient(Settings.MONGODB_CONNECTION_URL)
 	            .GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME)
@@ -40,6 +45,25 @@ namespace hubbl.web.models {
 	        return new MongoClient(Settings.MONGODB_CONNECTION_URL)
 	            .GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME)
 	            .Find(Builders<Hub>.Filter.Regex(Constants.HUB_NAME, query)).ToList().ConvertAll(el => new HubInfo(el.id.ToString(), el.name, el.owner.name));
+	    }
+
+	    public static Hub get(string id) {
+	        try {
+	            return new MongoClient(Settings.MONGODB_CONNECTION_URL)
+	                .GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME)
+	                .Find(Builders<Hub>.Filter.Eq(Constants.ID, id)).First();
+	        } catch (Exception e) {
+	            return null;
+	        }
+	    }
+
+	    public static string getOrError(string id) {
+	        Hub hub = get(id);
+	        return hub != null ? hub.toHubInfo().ToJson() : new ErrorResponse(210, Constants.NetMsg.KEY_NOT_FOUND).ToJson();
+	    }
+
+	    public static string tryConnect(string id) {
+	        return "no :(";
 	    }
 
 	}
