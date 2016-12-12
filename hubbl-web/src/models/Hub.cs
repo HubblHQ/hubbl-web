@@ -66,6 +66,7 @@ namespace hubbl.web.models {
 	                Builders<Hub>.Filter.Eq<String>(e => e.id.ToString(), userId) & Builders<Hub>.Filter.AnyNe<String>(e => e.users, hubId),
 	                Builders<Hub>.Update.Push(e => e.users, userId)
 	            );
+	            return new EmptyResponse().ToJson();
 	        } catch {
 	            return new ErrorResponse(210, Constants.NetMsg.KEY_NOT_FOUND).ToJson();;
 	        }

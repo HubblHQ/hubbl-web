@@ -54,7 +54,7 @@ namespace hubbl.web.models {
 	        long count = users.Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).Count();
 	        if (count > 0) return null;
 
-	        var salt = Utility.randomSalt()
+	        var salt = Utility.randomSalt();
 	        User user = new User(login, Utility.sha256(password + salt + Settings.SERVER_KEY), salt, name, null);
 	        users.InsertOne(user);
 	        return user;
