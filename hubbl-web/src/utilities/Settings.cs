@@ -4,6 +4,8 @@ namespace hubbl.web {
 	public class Settings {
 		public const string SERVER_URL = "http://localhost:8080/";
 	    public const string MONGODB_CONNECTION_URL = "mongodb://localhost/hubbl";
+
+	    public const string SERVER_KEY = "8kdrUrLqCYmbQafk";
 	}
 
     public class Constants {
@@ -35,4 +37,3 @@ namespace hubbl.web {
 
     }
 }
-

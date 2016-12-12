@@ -6,24 +6,26 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 
 namespace hubbl.web.models {
-	
+
 	public class User {
 	    [BsonId]
 		public ObjectId id;
 		public string login;
 		public string password;
+		public string salt;
 		public string name;
 	    public string token;
 
 	    [BsonConstructor]
-	    public User(string login, string password, string name, string token) {
+	    public User(string login, string password, string salt, string name, string token) {
 			this.login = login;
-			this.password = Utility.md5(password);
+			this.password = Utility.sha256(password + salt + Settings.SERVER_KEY);
+			this.salt = salt;
 			this.name = name;
 		}
 
 	    public static bool authentificated(String token) {
-	        return !String.IsNullOrEmpty(token);
+	        return !String.IsNullOrEmpty(token) && token.Equals(token);
 	    }
 
 	    public static string withAutentification(String token, Func<string, string> onSuccess, string parameter) {
@@ -35,11 +37,25 @@ namespace hubbl.web.models {
 	        IMongoCollection<User> users = new MongoClient(Settings.MONGODB_CONNECTION_URL).GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
 
 	        var builder = Builders<User>.Filter;
-	        FilterDefinition<User> filter = builder.Eq(Constants.USER_LOGIN, login) & builder.Eq(Constants.USER_PASSWORD, password);
+	        FilterDefinition<User> filter = builder.Eq(Constants.USER_LOGIN, login);
 
 	        List<User> result = users.Find(filter).ToList();
 
-	        return result.Count > 0 ? result[0] : null;
+			if(result.Count <= 0) {
+				return null;
+			}
+
+			User u = result[0];
+
+			string hashPassword = Utility.sha256(password + u.salt + Settings.SERVER_KEY);
+
+			if(!u.password.Equals(hashPassword)) {
+				return null;
+			}
+
+			u.token = System.Guid.NewGuid().ToString();
+
+	        return u;
 	    }
 
 	    public static string toLoginResponse(User user) {
@@ -53,8 +69,9 @@ namespace hubbl.web.models {
 	        List<User> usersWithThatLogin = users.Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).ToList();
 	        if (usersWithThatLogin.Count > 0) return null;
 
-	        User user = new User(login, password, name, null);
+	        User user = new User(login, password, Utility.randomSalt(), name, null);
 	        users.InsertOne(user);
+
 	        return user;
 	    }
 
@@ -65,4 +82,3 @@ namespace hubbl.web.models {
 
 	}
 }
-
