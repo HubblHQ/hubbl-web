@@ -6,56 +6,41 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 
 namespace hubbl.web.models {
-
+	
 	public class User {
 	    [BsonId]
 		public ObjectId id;
 		public string login;
 		public string password;
-		public string salt;
-		public string name;
+	    public string salt;
+	    public string name;
 	    public string token;
 
 	    [BsonConstructor]
 	    public User(string login, string password, string salt, string name, string token) {
 			this.login = login;
-			this.password = Utility.sha256(password + salt + Settings.SERVER_KEY);
-			this.salt = salt;
-			this.name = name;
+	        this.password = Utility.sha256(password + salt + Settings.SERVER_KEY);
+	        this.salt = salt;
+	        this.name = name;
 		}
 
-	    public static bool authentificated(String token) {
-	        return !String.IsNullOrEmpty(token) && token.Equals(token);
-	    }
-
-	    public static string withAutentification(String token, Func<string, string> onSuccess, string parameter) {
-	        if (!authentificated(token)) return new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson();
-	        return onSuccess(parameter);
+	    public static bool authentificated(string token, string userId) {
+	        try {
+	            return DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME)
+	                .Find(Builders<User>.Filter.Eq(Constants.ID, userId)).First().token == token;
+	        } catch {
+	            return false;
+	        }
 	    }
 
 	    public static User tryLogin(string login, string password) {
-	        IMongoCollection<User> users = new MongoClient(Settings.MONGODB_CONNECTION_URL).GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
-
-	        var builder = Builders<User>.Filter;
-	        FilterDefinition<User> filter = builder.Eq(Constants.USER_LOGIN, login);
-
-	        List<User> result = users.Find(filter).ToList();
-
-			if(result.Count <= 0) {
-				return null;
-			}
-
-			User u = result[0];
-
-			string hashPassword = Utility.sha256(password + u.salt + Settings.SERVER_KEY);
-
-			if(!u.password.Equals(hashPassword)) {
-				return null;
-			}
-
-			u.token = System.Guid.NewGuid().ToString();
-
-	        return u;
+	        try {
+	            User user = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME)
+	                .Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).First();
+	            return user.password == Utility.sha256(password + user.salt + Settings.SERVER_KEY) ? user : null;
+	        } catch {
+	            return null;
+	        }
 	    }
 
 	    public static string toLoginResponse(User user) {
@@ -64,14 +49,14 @@ namespace hubbl.web.models {
 	    }
 
 	    public static User trySignUp(string name, string login, string password) {
-	        IMongoCollection<User> users = new MongoClient(Settings.MONGODB_CONNECTION_URL).GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
+	        IMongoCollection<User> users = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
 
-	        List<User> usersWithThatLogin = users.Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).ToList();
-	        if (usersWithThatLogin.Count > 0) return null;
+	        long count = users.Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).Count();
+	        if (count > 0) return null;
 
-	        User user = new User(login, password, Utility.randomSalt(), name, null);
+	        var salt = Utility.randomSalt()
+	        User user = new User(login, Utility.sha256(password + salt + Settings.SERVER_KEY), salt, name, null);
 	        users.InsertOne(user);
-
 	        return user;
 	    }
 
@@ -82,3 +67,4 @@ namespace hubbl.web.models {
 
 	}
 }
+

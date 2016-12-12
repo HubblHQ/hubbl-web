@@ -36,23 +36,20 @@ namespace hubbl.web.models {
 	    }
 
 	    public static List<HubInfo> getAll() {
-	        return new MongoClient(Settings.MONGODB_CONNECTION_URL)
-	            .GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME)
+	        return DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME)
 	            .Find(_ => true).ToList().ConvertAll(el => new HubInfo(el.id.ToString(), el.name, el.owner.name));
 	    }
 
 	    public static List<HubInfo> find(string query) {
-	        return new MongoClient(Settings.MONGODB_CONNECTION_URL)
-	            .GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME)
+	        return DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME)
 	            .Find(Builders<Hub>.Filter.Regex(Constants.HUB_NAME, query)).ToList().ConvertAll(el => new HubInfo(el.id.ToString(), el.name, el.owner.name));
 	    }
 
 	    public static Hub get(string id) {
 	        try {
-	            return new MongoClient(Settings.MONGODB_CONNECTION_URL)
-	                .GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME)
+	            return DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME)
 	                .Find(Builders<Hub>.Filter.Eq(Constants.ID, id)).First();
-	        } catch (Exception e) {
+	        } catch {
 	            return null;
 	        }
 	    }
@@ -62,8 +59,16 @@ namespace hubbl.web.models {
 	        return hub != null ? hub.toHubInfo().ToJson() : new ErrorResponse(210, Constants.NetMsg.KEY_NOT_FOUND).ToJson();
 	    }
 
-	    public static string tryConnect(string id) {
-	        return "no :(";
+	    public static string tryConnect(string hubId, string userId) {
+	        try {
+	            var collection = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME);
+	            collection.FindOneAndUpdate(
+	                Builders<Hub>.Filter.Eq<String>(e => e.id.ToString(), userId) & Builders<Hub>.Filter.AnyNe<String>(e => e.users, hubId),
+	                Builders<Hub>.Update.Push(e => e.users, userId)
+	            );
+	        } catch {
+	            return new ErrorResponse(210, Constants.NetMsg.KEY_NOT_FOUND).ToJson();;
+	        }
 	    }
 
 	}

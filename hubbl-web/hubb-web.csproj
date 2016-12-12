@@ -72,6 +72,7 @@
     <Compile Include="src\models\User.cs" />
     <Compile Include="src\models\Hub.cs" />
     <Compile Include="src\models\Track.cs" />
+    <Compile Include="src\utilities\DbHolder.cs" />
     <Compile Include="src\utilities\Settings.cs" />
     <Compile Include="src\utilities\Utility.cs" />
     <Compile Include="src\models\Player.cs" />

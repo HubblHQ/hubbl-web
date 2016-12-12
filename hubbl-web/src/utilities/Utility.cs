@@ -17,9 +17,10 @@ namespace hubbl.web {
 
 			return sb.ToString();
 		}
+
 		public static string sha256(string input) {
-			SHA256 sha256 = System.Security.Cryptography.SHA256Managed.Create();
-			byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+			SHA256 sha256 = SHA256Managed.Create();
+			byte[] inputBytes = Encoding.ASCII.GetBytes(input);
 			byte[] hash = sha256.ComputeHash(inputBytes);
 
 			StringBuilder sb = new StringBuilder();
@@ -38,7 +39,7 @@ namespace hubbl.web {
             	sb.Append(ch);
         	}
 
-        	return builder.ToString();
+        	return sb.ToString();
 		}
 
 	}

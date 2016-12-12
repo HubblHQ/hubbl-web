@@ -1,7 +1,5 @@
-﻿namespace hubbl.web.models.network
-{
-    public class HubInfo
-    {
+﻿namespace hubbl.web.models.network {
+    public class HubInfo {
         public string id;
         public string name;
         public string author;
