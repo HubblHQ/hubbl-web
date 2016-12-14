@@ -72,6 +72,18 @@ namespace hubbl.web.models {
 	        }
 	    }
 
+	    public static string tryCreate(string token, string hubName) {
+	        User user = User.getAutentification(token);
+	        if (user == null) return new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson();
+
+	        var hubs = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Hub>(Constants.HUBS_TABLE_NAME);
+
+	        long count = hubs.Find(Builders<Hub>.Filter.Eq<String>(e => e.name, hubName)).Count();
+	        if (count > 0) return new ErrorResponse(220, Constants.NetMsg.HUB_ALREADY_EXISTS).ToJson();
+
+	        Hub hub = new Hub(hubName, user, new );
+	    }
+
 	}
 }
 

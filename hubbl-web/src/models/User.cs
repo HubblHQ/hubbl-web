@@ -19,25 +19,38 @@ namespace hubbl.web.models {
 	    [BsonConstructor]
 	    public User(string login, string password, string salt, string name, string token) {
 			this.login = login;
-	        this.password = Utility.sha256(password + salt + Settings.SERVER_KEY);
+	        this.password = password;
 	        this.salt = salt;
 	        this.name = name;
-		}
+	        this.token = token;
+	    }
 
-	    public static bool authentificated(string token, string userId) {
+	    public static User getAutentification(string token) {
 	        try {
 	            return DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME)
-	                .Find(Builders<User>.Filter.Eq(Constants.ID, userId)).First().token == token;
+	            .Find(Builders<User>.Filter.Eq<String>(e => e.token, token)).First();
 	        } catch {
-	            return false;
+	            return null;
 	        }
 	    }
 
+	    public static bool authentificated(string token) {
+	        return getAutentification(token) != null;
+	    }
+
 	    public static User tryLogin(string login, string password) {
-	        try {
-	            User user = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME)
-	                .Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).First();
-	            return user.password == Utility.sha256(password + user.salt + Settings.SERVER_KEY) ? user : null;
+	        try
+	        {
+	            var collection =
+	                DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
+	            User user = collection.Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).First();
+	            if (user.password != Utility.sha256(password + user.salt + Settings.SERVER_KEY)) return null;
+	            user.token = Guid.NewGuid().ToString();
+	            collection.FindOneAndUpdate(
+	                Builders<User>.Filter.Eq<ObjectId>(e => e.id, user.id),
+	                Builders<User>.Update.Set(e => e.token, user.token)
+	            );
+	            return user;
 	        } catch {
 	            return null;
 	        }
@@ -54,15 +67,14 @@ namespace hubbl.web.models {
 	        long count = users.Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).Count();
 	        if (count > 0) return null;
 
-	        var salt = Utility.randomSalt();
+	        string salt = Utility.randomSalt();
 	        User user = new User(login, Utility.sha256(password + salt + Settings.SERVER_KEY), salt, name, null);
 	        users.InsertOne(user);
 	        return user;
 	    }
 
 	    public static string toSignUpResponse(User user) {
-	        if (user == null) return new ErrorResponse(202, Constants.NetMsg.SIGNUP_FAILED).ToJson();
-	        return new EmptyResponse().ToJson();
+	        return user == null ? new ErrorResponse(202, Constants.NetMsg.SIGNUP_FAILED).ToJson() : new EmptyResponse().ToJson();
 	    }
 
 	}

@@ -33,6 +33,7 @@ namespace hubbl.web {
             public const string SIGNUP_FAILED = "Error while creating user";
             public const string FORBIDDEN = "Access denied";
             public const string KEY_NOT_FOUND = "Key not found";
+            public const string HUB_ALREADY_EXISTS = "Hub already exists";
         }
 
     }

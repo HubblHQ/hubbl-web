@@ -14,20 +14,37 @@ namespace hubbl.web.models {
 			STOP = 2
 		}
 
-	    public ObjectId id;
-	    public Status status = Status.STOP;
-		public Track current = null;
-		private SimplePriorityQueue<long> playlist = new SimplePriorityQueue<long>();
-		private SimplePriorityQueue<long> pendingList = new SimplePriorityQueue<long>();
-		private Dictionary<long,Track> tracks = new Dictionary<long,Track>();
-		public int position = 0;
-		public int volume = 100;
+	    public Status status;
+		public long current;
+		private ConcList<long> playlist;
+		private List<long> pendingList;
+		private Dictionary<long,Track> tracks;
+		public int position;
+		public int volume;
 
-		public Player() {
+	    [BsonConstructor]
+	    public Player(Status status, long current, List<long> playlist, List<long> pendingList, Dictionary<long,Track> tracks,
+	        int position, int volume) {
+	        this.status = status;
+	        this.current = current;
+	        this.playlist = playlist;
+	        this.pendingList = pendingList;
+	        this.tracks = tracks;
+	        this.position = position;
+	        this.volume = volume;
 
-		}
+	        ;
+	    }
 
-
+	    public Player() {
+	        this.status = Status.STOP;
+	        this.current = 0;
+	        this.playlist = new List<long>();
+	        this.pendingList = new List<long>();
+	        this.tracks = new Dictionary<long, Track>();
+	        this.position = 0;
+	        this.volume = 100;
+	    }
 
 	}
 }
