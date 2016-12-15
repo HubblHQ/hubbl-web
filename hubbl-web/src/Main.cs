@@ -11,6 +11,7 @@ namespace hubbl.web {
 		public static void Main(string[] args) {
 			var exitEvent = new ManualResetEvent(false);
 
+		    Settings.init();
 		    host = new NancyHost(
 				new Uri(Settings.SERVER_URL)
 			);
@@ -24,8 +25,11 @@ namespace hubbl.web {
 
 			Console.WriteLine("Nancy serving " + Settings.SERVER_URL);
 			//Process.Start(Settings.SERVER_URL);
+
 			exitEvent.WaitOne();
+
 			host.Stop();
+		    Settings.save();
 		}
 
 	}

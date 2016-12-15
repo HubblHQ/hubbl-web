@@ -1,16 +1,41 @@
-﻿using System;
+﻿using hubbl.web.models;
+using MongoDB.Driver;
 
 namespace hubbl.web {
 	public class Settings {
 		public const string SERVER_URL = "http://localhost:8080/";
 	    public const string MONGODB_CONNECTION_URL = "mongodb://localhost/hubbl";
 
-	    public const string SERVER_KEY = "8kdrUrLqCYmbQafk";
+	    private static string serverKey;
+	    public static string getServerKey() {
+	        return serverKey;
+	    }
+
+	    private static long nextPlayerId;
+	    public static long getNextPlayerId() {
+	        return nextPlayerId++;
+	    }
+
+	    public static void init() {
+            IMongoCollection<Setting> settings = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Setting>(Constants.SETTINGS_TABLE_NAME);
+            Setting setting = settings.Find(_ => true).First();
+            serverKey = setting.serverKey;
+            nextPlayerId = setting.nextPlayerId;
+	    }
+
+	    public static void save() {
+	        IMongoCollection<Setting> settings = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<Setting>(Constants.SETTINGS_TABLE_NAME);
+	        settings.FindOneAndUpdate(
+	            _ => true,
+	            Builders<Setting>.Update.Set(e => e.nextPlayerId, nextPlayerId).Set(e => e.serverKey, serverKey)
+	        );
+	    }
 	}
 
     public class Constants {
         public const string HUBBL_DB_NAME = "hubbl";
 
+        public const string SETTINGS_TABLE_NAME = "settings";
         public const string USERS_TABLE_NAME = "users";
         public const string HUBS_TABLE_NAME = "hubs";
 

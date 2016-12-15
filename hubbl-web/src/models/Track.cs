@@ -7,8 +7,9 @@ namespace hubbl.web.models {
 	public class Track {
 
 	    public enum Status {
-	        ACCEPTED,
-	        PENDING
+	        PLAYING = 0,
+	        ACCEPTED = 1,
+	        PENDING = 2
 	    }
 
 	    public ObjectId id;

@@ -48,8 +48,7 @@ namespace hubbl.web {
 		        Hub.getOrError(Request.Query["id"]) : new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson());
 
 			// { id } -> {}
-			Get("/hub/connect", _ => User.authentificated(Request.Query["token"]) ?
-		        Hub.tryConnect(Request.Query["id"], Request.Query["userId"]) : new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson());
+			Get("/hub/connect", _ => Hub.tryConnect(Request.Query["id"], Request.Query["token"]));
 
 		    // { name } -> { id }
 			Get("/hub/new", _ => Hub.tryCreate(Request.Query["token"], Request.Query["name"]));

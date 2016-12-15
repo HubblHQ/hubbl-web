@@ -39,12 +39,10 @@ namespace hubbl.web.models {
 	    }
 
 	    public static User tryLogin(string login, string password) {
-	        try
-	        {
-	            var collection =
-	                DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
-	            User user = collection.Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).First();
-	            if (user.password != Utility.sha256(password + user.salt + Settings.SERVER_KEY)) return null;
+	        try {
+	            var collection = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
+	            User user = collection.Find(Builders<User>.Filter.Eq<String>(u => u.login, login)).First();
+	            if (user.password != Utility.sha256(password + user.salt + Settings.getServerKey())) return null;
 	            user.token = Guid.NewGuid().ToString();
 	            collection.FindOneAndUpdate(
 	                Builders<User>.Filter.Eq<ObjectId>(e => e.id, user.id),
@@ -64,11 +62,11 @@ namespace hubbl.web.models {
 	    public static User trySignUp(string name, string login, string password) {
 	        IMongoCollection<User> users = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
 
-	        long count = users.Find(Builders<User>.Filter.Eq(Constants.USER_LOGIN, login)).Count();
+	        long count = users.Find(Builders<User>.Filter.Eq<String>(u => u.login, login)).Count();
 	        if (count > 0) return null;
 
 	        string salt = Utility.randomSalt();
-	        User user = new User(login, Utility.sha256(password + salt + Settings.SERVER_KEY), salt, name, null);
+	        User user = new User(login, Utility.sha256(password + salt + Settings.getServerKey()), salt, name, null);
 	        users.InsertOne(user);
 	        return user;
 	    }
