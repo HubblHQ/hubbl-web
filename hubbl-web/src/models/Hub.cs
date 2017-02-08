@@ -13,21 +13,18 @@ namespace hubbl.web.models {
 	    public ObjectId id;
 		public string name;
 		public User owner;
-		public long player;
 		public List<string> users;
 
 	    [BsonConstructor]
-	    public Hub(string name, User owner, long player, List<string> users) {
+	    public Hub(string name, User owner, List<string> users) {
 			this.name = name;
 			this.owner = owner;
-			this.player = player;
 			this.users = users;
 		}
 
-	    public Hub(string name, User owner, Player player) {
+	    public Hub(string name, User owner) {
 	        this.name = name;
 	        this.owner = owner;
-	        this.player = player.id;
 	        this.users = new List<string> {owner.id.ToString()};
 	    }
 
@@ -86,9 +83,10 @@ namespace hubbl.web.models {
 	        long count = hubs.Find(Builders<Hub>.Filter.Eq<String>(e => e.name, hubName)).Count();
 	        if (count > 0) return new ErrorResponse(220, Constants.NetMsg.HUB_ALREADY_EXISTS).ToJson();
 
-	        Player player = new Player();
-	        Hub hub = new Hub(hubName, user, player);
+	        Hub hub = new Hub(hubName, user);
             hubs.InsertOne(hub);
+
+	        //Player player = new Player(hub.id.ToString());
 	        return new IdResponse(hub.id.ToString()).ToJson();
 	    }
 

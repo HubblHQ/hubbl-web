@@ -75,7 +75,7 @@ $(document).ready(function() {
     });
 
     var playlist = new PlayList();
-    playlist.add(new PlayListEntry(0, 'November Rain', 'Guns N\' Roses', 0, 'https://cs4-1v4.vk-cdn.net/p3/1c89f1a8249c56.mp3', 120, 0, 0, PLAYLIST_ENTRY_STATUS_ACCEPTED));
+    playlist.add(new PlayListEntry(0, 'November Rain', 'Guns N\' Roses', 0, 'https://cs5-1v4.vk-cdn.net/p13/61db60f56b838e.mp3', 120, 0, 0, PLAYLIST_ENTRY_STATUS_ACCEPTED));
 
     var player = new Player(playlist);
 

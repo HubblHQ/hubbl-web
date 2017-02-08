@@ -12,7 +12,7 @@ namespace hubbl.web.models {
 	        PENDING = 2
 	    }
 
-	    public ObjectId id;
+	    public long id;
 	    public string title;
 		public string artist;
 		public User publisher;
@@ -29,6 +29,8 @@ namespace hubbl.web.models {
 			this.publisher = publisher;
 			this.providerURI = providerURI;
 			this.duration = duration;
+	        this.likes = likes;
+	        this.dislikes = dislikes;
 	        this.status = status;
 	    }
 

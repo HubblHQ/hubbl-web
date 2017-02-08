@@ -57,7 +57,10 @@ namespace hubbl.web {
 
 		private void initAwailableForConnected() {
 
-			// {} -> {}
+		    // {} -> {}
+		    Get("/hub/disconnect", _ => "");
+
+		    // {} -> {}
 			Get("/hub/delete", _ => "");
 
 			// { id } -> { users: [ { id, name }, ... ] }
