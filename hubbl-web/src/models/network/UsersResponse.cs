@@ -20,8 +20,8 @@ namespace hubbl.web.models.network {
             }
         }
 
-        public UsersResponse(List<string> users) {
-            users.ForEach(u => { this.users.Add(new SUser(User.get(u))); });
+        public UsersResponse(List<User> users) {
+            this.users = users.ConvertAll(u => new SUser(u));
         }
     }
 }

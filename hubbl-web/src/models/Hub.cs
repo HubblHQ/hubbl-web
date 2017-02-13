@@ -64,18 +64,9 @@ namespace hubbl.web.models {
 	            if (user == null) return new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson();
 	            if (hub == null) return new ErrorResponse(300, Constants.NetMsg.KEY_NOT_FOUND).ToJson();
 
-	            if(Realtime.getInstance().connectedUsers[user.id.ToString()] != null) return new ErrorResponse(300, Constants.NetMsg.ALREADY_CONNECTED).ToJson();
+	            if(Realtime.getInstance().isUserConnected(user.id.ToString())) return new ErrorResponse(300, Constants.NetMsg.ALREADY_CONNECTED).ToJson();
 
-	            Realtime.getInstance().connectedUsers[user.id.ToString()] = hubId;
-
-	            List<string> users;
-	            if (Realtime.getInstance().hubUsers[hubId] == null) {
-	                users = Realtime.getInstance().hubUsers[hubId] = new List<string>();
-	            } else {
-	                users = Realtime.getInstance().hubUsers[hubId];
-	            }
-
-	            users.Add(user.id.ToString());
+	            Realtime.getInstance().connectToHub(user.id.ToString(), hubId);
 
 	            return new EmptyResponse().ToJson();
 	        } catch {
@@ -89,11 +80,9 @@ namespace hubbl.web.models {
 
 	            if (user == null) return new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson();
 
-	            if(Realtime.getInstance().connectedUsers[user.id.ToString()] == null) return new ErrorResponse(300, Constants.NetMsg.NOT_CONNECTED).ToJson();
+	            if(Realtime.getInstance().isUserConnected(user.id.ToString())) return new ErrorResponse(300, Constants.NetMsg.NOT_CONNECTED).ToJson();
 
-	            string hubId;
-	            Realtime.getInstance().connectedUsers.TryRemove(user.id.ToString(), out hubId);
-	            Realtime.getInstance().hubUsers[hubId].Remove(user.id.ToString());
+	            Realtime.getInstance().disconnect(user.id.ToString());
 
 	            return new EmptyResponse().ToJson();
 	        } catch {
@@ -121,9 +110,15 @@ namespace hubbl.web.models {
 	        User user = User.getAutentification(token);
 
 	        if (user == null) return new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson();
-	        if(Realtime.getInstance().connectedUsers[user.id.ToString()] == null) return new ErrorResponse(300, Constants.NetMsg.NOT_CONNECTED).ToJson();
 
-	        return new UsersResponse(Realtime.getInstance().hubUsers[user.id.ToString()]).ToJson();
+	        string hub = Realtime.getInstance().getUserHub(user.id.ToString());
+
+	        if(hub != null) return new ErrorResponse(300, Constants.NetMsg.NOT_CONNECTED).ToJson();
+
+	        List<string> hubUserIDs = Realtime.getInstance().getHubUsers(hub);
+	        List<User> hubUsers = hubUserIDs.ConvertAll(User.get);
+
+	        return new UsersResponse(hubUsers).ToJson();
 	    }
 	}
 }

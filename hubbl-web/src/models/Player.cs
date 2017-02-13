@@ -63,6 +63,13 @@ namespace hubbl.web.models {
 	        }
 	    }
 
+	    public static string getPlayList(string token) {
+	        User user = User.getAutentification(token);
+
+	        // TODO: here
+
+	        return "";
+	    }
 	}
 }
 

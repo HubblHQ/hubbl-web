@@ -63,14 +63,15 @@ namespace hubbl.web {
 		    // {} -> {}
 			Get("/hub/delete", _ => "");
 
-			// { id } -> { users: [ { id, name }, ... ] }
-			Get("/hub/users", _ => Hub.getUsers(Request.Query["id"]));
+			// { } -> { users: [ { id, name }, ... ] }
+			Get("/hub/users", _ => Hub.getUsers(Request.Query["token"]));
 
-			// { id } -> { name }
-			Get("/user", _ => User.getUser(User.get(Request.Query["id"])));
+			// { } -> { name }
+			Get("/user", _ => User.getUser(User.get(Request.Query["token"])));
 
 			// {} -> { playlist: [ ... ] }
-			Get("/playlist", _ => "");
+			Get("/playlist", _ => Player.getPlayList(Request.Query["token"]));
+
 
 			// {} -> { playlist: [ ... ] }
 			Get("/playlist/full", _ => "");
