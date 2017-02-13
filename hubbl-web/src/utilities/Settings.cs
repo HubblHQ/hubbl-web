@@ -59,6 +59,8 @@ namespace hubbl.web {
             public const string FORBIDDEN = "Access denied";
             public const string KEY_NOT_FOUND = "Key not found";
             public const string HUB_ALREADY_EXISTS = "Hub already exists";
+            public const string ALREADY_CONNECTED = "User already connected to hub";
+            public const string NOT_CONNECTED = "User not connected to any hub";
         }
 
     }

@@ -57,17 +57,17 @@ namespace hubbl.web {
 
 		private void initAwailableForConnected() {
 
-		    // {} -> {}
+		    // { id } -> {}
 		    Get("/hub/disconnect", _ => "");
 
 		    // {} -> {}
 			Get("/hub/delete", _ => "");
 
 			// { id } -> { users: [ { id, name }, ... ] }
-			Get("/hub/users", _ => "");
+			Get("/hub/users", _ => Hub.getUsers(Request.Query["id"]));
 
 			// { id } -> { name }
-			Get("/user", _ => "");
+			Get("/user", _ => User.getUser(User.get(Request.Query["id"])));
 
 			// {} -> { playlist: [ ... ] }
 			Get("/playlist", _ => "");

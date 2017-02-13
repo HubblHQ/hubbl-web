@@ -25,6 +25,22 @@ namespace hubbl.web.models {
 	        this.token = token;
 	    }
 
+	    public static User get(string id)
+	    {
+	        try {
+	            var collection = DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME);
+                User user = collection.Find(Builders<User>.Filter.Eq<String>(u => u.id.ToString(), id)).First();
+                return user;
+	        } catch {
+	            return null;
+	        }
+	    }
+
+	    public static string getUser(User user)
+	    {
+	        return user == null ? new ErrorResponse(210, Constants.NetMsg.KEY_NOT_FOUND).ToJson() : new UserResponse(user).ToJson();
+	    }
+
 	    public static User getAutentification(string token) {
 	        try {
 	            return DbHolder.getDb().GetDatabase(Constants.HUBBL_DB_NAME).GetCollection<User>(Constants.USERS_TABLE_NAME)

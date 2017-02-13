@@ -71,12 +71,15 @@
     <Compile Include="src\models\network\HubsListResponse.cs" />
     <Compile Include="src\models\network\IdResponse.cs" />
     <Compile Include="src\models\network\LoginResponse.cs" />
+    <Compile Include="src\models\network\UserResponse.cs" />
+    <Compile Include="src\models\network\UsersResponse.cs" />
     <Compile Include="src\models\Setting.cs" />
     <Compile Include="src\models\User.cs" />
     <Compile Include="src\models\Hub.cs" />
     <Compile Include="src\models\Track.cs" />
     <Compile Include="src\utilities\DbHolder.cs" />
     <Compile Include="src\utilities\Logger.cs" />
+    <Compile Include="src\utilities\Realtime.cs" />
     <Compile Include="src\utilities\Settings.cs" />
     <Compile Include="src\utilities\Utility.cs" />
     <Compile Include="src\models\Player.cs" />
