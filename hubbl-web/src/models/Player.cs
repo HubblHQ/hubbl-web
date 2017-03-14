@@ -1,4 +1,8 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using hubbl.web.models.network;
+using MongoDB.Bson;
 
 namespace hubbl.web.models {
 	
@@ -10,7 +14,7 @@ namespace hubbl.web.models {
 			STOP = 2
 		}
 
-	    public string hubId { get; private set; }
+	    public string hubId { get; }
 
 	    public Status status;
 
@@ -63,12 +67,36 @@ namespace hubbl.web.models {
 	        }
 	    }
 
-	    public static string getPlayList(string token) {
+	    public List<long> getPlayList() {
+	        lock (this.playlist) {
+	            return playlist.ToList();
+	        }
+	    }
+
+	    public static string getPlayListResponse(string token) {
 	        User user = User.getAutentification(token);
 
-	        // TODO: here
+	        if (user == null) return new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson();
 
-	        return "";
+	        Player player = Realtime.getInstance().getPlayer(user.id.ToString());
+	        List<long> playlist = Realtime.getInstance().getPlayList(user.id.ToString());
+
+            if (player == null || playlist == null) return new ErrorResponse(300, Constants.NetMsg.FORBIDDEN).ToJson();
+
+	        List<PlaylistEntry> playlistForResponse = playlist.ConvertAll<PlaylistEntry>(el => {
+	            Track track = player.tracks[el];
+	            return new PlaylistEntry() {
+	                artist = track.artist,
+	                dislikes = track.dislikes,
+	                duration = track.duration,
+	                id = el,
+	                likes = track.likes,
+	                publisher = track.publisher.name,
+	                title = track.title
+	            };
+	        });
+
+	        return new PlaylistResponse(playlistForResponse).ToJson();
 	    }
 	}
 }

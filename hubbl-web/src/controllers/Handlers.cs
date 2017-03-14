@@ -70,7 +70,7 @@ namespace hubbl.web {
 			Get("/user", _ => User.getUser(User.get(Request.Query["token"])));
 
 			// {} -> { playlist: [ ... ] }
-			Get("/playlist", _ => Player.getPlayList(Request.Query["token"]));
+			Get("/playlist", _ => Player.getPlayListResponse(Request.Query["token"]));
 
 
 			// {} -> { playlist: [ ... ] }

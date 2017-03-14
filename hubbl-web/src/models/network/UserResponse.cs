@@ -3,7 +3,7 @@
 
         public string name;
 
-        public UserResponse(User user) {
+        public UserResponse(User user) : base() {
             this.name = user.name;
         }
     }

@@ -16,8 +16,7 @@
         public string name;
         public string author;
 
-        public HubInfoResponse(string id, string name, string author) {
-            this.status = Constants.Status.OK;
+        public HubInfoResponse(string id, string name, string author) : base() {
             this.id = id;
             this.name = name;
             this.author = author;
